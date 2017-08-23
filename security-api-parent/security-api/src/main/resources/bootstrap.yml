@@ -1,0 +1,58 @@
+info:
+  app:
+    name: security-server
+    description: Security Service
+    version: 1.0.0
+
+server:
+  port: 1113
+  context-path: /auth
+
+spring:
+  application:
+    name: security-server
+  profiles:
+    active: prod
+
+---
+
+spring:
+  profiles: dev
+  cloud:
+    config:
+      uri: http://10.52.180.29/config-service/
+logging:
+  config: classpath:logback.xml
+
+---
+
+spring:
+    profiles: test
+    cloud:
+      config:
+        uri: http://config-server:1111/config-service/
+logging:
+  config: classpath:logback.xml
+
+---
+
+spring:
+  profiles: qa
+  cloud:
+    config:
+      uri: http://10.52.180.42:1111/config-service/
+logging:
+  config: classpath:log/logback-qa.xml
+
+---
+
+spring:
+  profiles: prod
+  cloud:
+    config:
+      uri: http://10.52.180.42:8081/config-service/
+logging:
+  config: classpath:log/logback-prod.xml
+
+---
+
