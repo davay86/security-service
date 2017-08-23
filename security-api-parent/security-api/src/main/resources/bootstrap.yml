@@ -1,7 +1,7 @@
 info:
   app:
-    name: security-server
-    description: Security Service
+    name: security-api
+    description: Security API
     version: 1.0.0
 
 server:
@@ -10,7 +10,7 @@ server:
 
 spring:
   application:
-    name: security-server
+    name: security-api
   profiles:
     active: prod
 
@@ -20,7 +20,7 @@ spring:
   profiles: dev
   cloud:
     config:
-      uri: http://10.52.180.29/config-service/
+      uri: http://10.52.180.29/config-api/
 logging:
   config: classpath:logback.xml
 
@@ -30,7 +30,7 @@ spring:
     profiles: test
     cloud:
       config:
-        uri: http://config-server:1111/config-service/
+        uri: http://config-server:1111/config-api/
 logging:
   config: classpath:logback.xml
 
@@ -40,7 +40,7 @@ spring:
   profiles: qa
   cloud:
     config:
-      uri: http://10.52.180.42:1111/config-service/
+      uri: http://10.52.180.42:1111/config-api/
 logging:
   config: classpath:log/logback-qa.xml
 
@@ -50,7 +50,7 @@ spring:
   profiles: prod
   cloud:
     config:
-      uri: http://10.52.180.42:8081/config-service/
+      uri: http://10.52.180.42:8081/config-api/
 logging:
   config: classpath:log/logback-prod.xml
 
