@@ -7,6 +7,7 @@ ENV PATH                   $PATH:$JAVA_HOME/bin
 
 ENV SPRING_PROFILES_ACTIVE prod
 ENV SERVER_PORT 1112
+ENV CONFIG_URL http://10.52.180.42:1111/config-api/
 
 WORKDIR /app
 
@@ -18,4 +19,4 @@ EXPOSE $SERVER_PORT
 
 ADD @executable.server.jar.name@.jar app.jar
 
-CMD ["/bin/sh", "-c", "java $JAVA_OPTS -jar app.jar --server.port=$SERVER_PORT --spring.profiles.active=$SPRING_PROFILES_ACTIVE"]
+CMD ["/bin/sh", "-c", "java $JAVA_OPTS -jar app.jar --server.port=$SERVER_PORT --spring.profiles.active=$SPRING_PROFILES_ACTIVE --spring.cloud.config.uri=$CONFIG_URL"]

@@ -12,15 +12,15 @@ spring:
   application:
     name: security-api
   profiles:
-    active: prod
+    active: local
 
 ---
 
 spring:
-  profiles: dev
+  profiles: local
   cloud:
     config:
-      uri: http://10.52.180.29/config-api/
+      uri: http://localhost:1111/config-api/
 logging:
   config: classpath:logback.xml
 
@@ -42,7 +42,7 @@ spring:
     config:
       uri: http://10.52.180.42:1111/config-api/
 logging:
-  config: classpath:log/logback-qa.xml
+  config: classpath:logback-qa.xml
 
 ---
 
@@ -52,7 +52,7 @@ spring:
     config:
       uri: http://10.52.180.42:1111/config-api/
 logging:
-  config: classpath:log/logback-prod.xml
+  config: classpath:logback-prod.xml
 
 ---
 
