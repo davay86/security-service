@@ -1,0 +1,9 @@
+node{
+    stage('Release to QA'){
+        //kubectl script to push to kubernetes environment.
+    }
+
+    stage('Verify QA'){
+        //verify QA manual or smoke test.
+    }
+}

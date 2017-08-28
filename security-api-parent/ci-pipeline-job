@@ -1,0 +1,46 @@
+def pomLocation = "security-api-parent"
+def dockerRepoName = "sleepingtalent/security-api"
+def targetLocation = "security-api-parent/security-api/target"
+def version
+
+node {
+  def img
+  def releaseVersion
+
+  stage('Checkout') {
+    checkout scm
+  }
+
+  stage('Build Application') {
+    sh 'mvn -B -V -U -e -f '+pomLocation+'/pom.xml clean install'
+  }
+
+  stage('Tag Release'){
+    def pom = readMavenPom file: pomLocation+'/pom.xml'
+    version = pom.version
+    releaseVersion = version.minus("-SNAPSHOT") + "-RC"
+
+    sh "mvn -B -V -U -e -f " + pomLocation + "/pom.xml release:clean release:prepare"
+
+  }
+
+  stage('Package Image') {
+    def pom = readMavenPom file: pomLocation+'/pom.xml'
+    version = pom.version
+    img = docker.build(dockerRepoName+':'+releaseVersion , targetLocation)
+  }
+
+  stage('Push Image') {
+    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        img.push()
+        img.push("latest")
+    }
+  }
+
+  stage('Remove Local Image') {
+       sh 'docker rmi -f registry.hub.docker.com/'+dockerRepoName+':latest'
+       sh 'docker rmi -f registry.hub.docker.com/'+dockerRepoName+':'+releaseVersion
+       sh 'docker rmi -f '+dockerRepoName+':'+releaseVersion
+  }
+
+}
