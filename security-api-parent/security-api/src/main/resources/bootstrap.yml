@@ -2,7 +2,7 @@ info:
   app:
     name: security-api
     description: Security API
-    version: 1.0.0
+    version: @project.version@
 
 server:
   port: 1112
