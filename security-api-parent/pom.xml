@@ -26,7 +26,6 @@
 
 	<scm>
 		<developerConnection>scm:git:https://github.com/BabcockEMTDevelopment/security-api.git</developerConnection>
-		<tag>HEAD</tag>
 	</scm>
 
 	<build>
