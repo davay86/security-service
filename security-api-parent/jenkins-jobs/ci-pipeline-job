@@ -8,8 +8,8 @@ node {
 
    stage('Build and Release'){
       def pom = readMavenPom file: pomLocation+'/pom.xml'
-      version = pom.version
-      releaseVersion = version.minus("-SNAPSHOT")
+      def version = pom.version
+      def releaseVersion = version.minus("-SNAPSHOT")
 
       sh "mvn -B -V -U -e -f " + pomLocation + "/pom.xml release:clean release:prepare -Pdocker-publish -Ddocker.release.version="+releaseVersion
     }
