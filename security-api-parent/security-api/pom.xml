@@ -95,6 +95,26 @@
 									<goal>remove</goal>
 								</goals>
 							</execution>
+							<execution>
+								<id>publish-docker-latest</id>
+								<configuration>
+									<images>
+										<image>
+											<name>sleepingtalent/security-api:latest</name>
+											<build>
+												<dockerFileDir>${project.parent.basedir}/security-api/target/docker-dist</dockerFileDir>
+											</build>
+										</image>
+									</images>
+									<removeAll>true</removeAll>
+								</configuration>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>build</goal>
+									<goal>push</goal>
+									<goal>remove</goal>
+								</goals>
+							</execution>
 						</executions>
 					</plugin>
 				</plugins>
