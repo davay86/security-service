@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: security-api-service
+    labels:
+        app: security-api
+        tier: security
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 1112
+    selector:
+        app: security-api
+        tier: security
+
+

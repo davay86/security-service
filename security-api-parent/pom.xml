@@ -21,9 +21,11 @@
 		<spring-cloud.version>Brixton.RELEASE</spring-cloud.version>
 		<java.version>1.8</java.version>
 		<project.scm.id>github-scm-server</project.scm.id>
+		<scm.plugin.version>1.9.5</scm.plugin.version>
 	</properties>
 
 	<scm>
+		<connection>scm:git:https://github.com/BabcockEMTDevelopment/security-api.git</connection>
 		<developerConnection>scm:git:https://github.com/BabcockEMTDevelopment/security-api.git</developerConnection>
 	  <tag>HEAD</tag>
   </scm>
@@ -36,9 +38,33 @@
 				<version>2.5.3</version>
 				<configuration>
 					<tagNameFormat>@{project.version}-RC</tagNameFormat>
+					<preparationGoals>
+						clean verify org.apache.maven.plugins:maven-scm-plugin:${scm.plugin.version}:checkin
+					</preparationGoals>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>${scm.plugin.version}</version>
+				<configuration>
+					<connectionType>connection</connectionType>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<configuration>
+							<pushChanges>true</pushChanges>
+							<message>[maven-release-plugin] committing-kubernetes-config</message>
+							<includes>**/kubernetes/**,**/pom.xml</includes>
+							<excludes>**/target/**,**/resources/**</excludes>
+						</configuration>
+						<goals>
+							<goal>checkin</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
