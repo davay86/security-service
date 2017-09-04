@@ -1,9 +1,11 @@
 node{
-    stage('Release to QA'){
-        //kubectl script to push to kubernetes environment.
+
+    stage('Checkout') {
+        checkout scm
     }
 
-    stage('Verify QA'){
-        //verify QA manual or smoke test.
+    stage('Release to QA'){
+        sh "kubectl config --kubeconfig=/etc/.kube/config use-context aws_QA"
+        sh "kubectl replace --kubeconfig=/etc/.kube/config  -f security-api-parent/security-api/kubernetes/security-api-qa-deployment.yml --record"
     }
 }
