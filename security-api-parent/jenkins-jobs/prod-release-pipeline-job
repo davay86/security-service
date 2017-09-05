@@ -1,0 +1,30 @@
+def dockerRepoName = "sleepingtalent/security-api"
+def releaseCandidate = params.RELEASE_CANDIDATE
+def release
+
+node {
+
+    stage('Checkout') {
+        checkout scm
+    }
+
+    stage('Package Image') {
+        release = releaseCandidate.minus("-RC")
+
+        def img = docker.image(dockerRepoName+":"+releaseCandidate)
+
+        img.pull()
+
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            img.push(release)
+        }
+
+        sh 'docker rmi -f registry.hub.docker.com/'+dockerRepoName+':'+release
+        sh 'docker rmi -f '+dockerRepoName+':'+releaseCandidate
+    }
+
+    stage('Release to Prod'){
+        //sh "kubectl config --kubeconfig=/etc/.kube/config use-context aws_QA"
+        //sh "kubectl replace --kubeconfig=/etc/.kube/config  -f configuration-api-parent/configuration-api/kubernetes/config-api-prod-deployment.yml --record"
+    }
+}
