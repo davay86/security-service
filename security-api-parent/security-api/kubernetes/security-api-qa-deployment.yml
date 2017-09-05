@@ -12,7 +12,7 @@ spec:
         spec:
             containers:
             - name: security-api
-              image: sleepingtalent/security-api:1.0.17-RC
+              image: sleepingtalent/security-api:1.0.18-RC
               env:
               - name: CONFIG_URL
                 value: http://ae72c3afb915511e795a406fc096cf91-818673775.us-west-2.elb.amazonaws.com:1111/config-api/
