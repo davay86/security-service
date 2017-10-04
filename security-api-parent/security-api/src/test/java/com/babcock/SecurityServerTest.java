@@ -21,6 +21,11 @@ import static org.junit.Assert.assertEquals;
 
 public class SecurityServerTest {
 
+    private static String SECURITY_SERVER_TOKEN_URL = "http://localhost:1112/auth/oauth/token";
+    private static String SECURITY_SERVER_AUTHORIZE_URL = "http://localhost:1112/auth/oauth/authorize";
+
+    private static String ADMIN_PERMISSIONS_URL = "http://localhost:2222/security-admin-api/securityadmin/permissions";
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -32,10 +37,11 @@ public class SecurityServerTest {
         resourceDetails.setId("devOAuth");
         resourceDetails.setClientId("devApp");
         resourceDetails.setClientSecret("devAppSecret");
+
         resourceDetails.setUsername("admin");
         resourceDetails.setPassword("password");
-        //resourceDetails.setAccessTokenUri("http://localhost:1111/auth/oauth/token");
-        resourceDetails.setAccessTokenUri("http://10.52.180.31/auth/oauth/token");
+
+        resourceDetails.setAccessTokenUri(SECURITY_SERVER_TOKEN_URL);
         resourceDetails.setGrantType("password");
 
         DefaultOAuth2ClientContext context = new DefaultOAuth2ClientContext();
@@ -44,9 +50,10 @@ public class SecurityServerTest {
         int count = 2;
 
         for(int i = 0; i < count; i++) {
-            String response = restTemplate.getForObject("http://localhost:2222/security-admin-service/securityadmin/permissions", String.class);
-            //String response = restTemplate.getForObject("http://localhost:3333/message-service/message/hystrixTest", String.class);
-            assertEquals("circuit working as expected", response);
+            String response = restTemplate.getForObject(ADMIN_PERMISSIONS_URL, String.class);
+            assertEquals("[{\"id\":1,\"name\":\"*\",\"description\":\"All permissions\"}," +
+                    "{\"id\":2,\"name\":\"view:drawing:*\",\"description\":\"All view drawing permissions\"}," +
+                    "{\"id\":3,\"name\":\"view:drawing:info\",\"description\":\"Only view drawing info permissions\"}]", response);
         }
     }
 
@@ -59,8 +66,7 @@ public class SecurityServerTest {
         resourceDetails.setClientId("devApp");
         resourceDetails.setClientSecret("devAppSecret");
 
-        resourceDetails.setAccessTokenUri("http://localhost:1113/auth/oauth/token");
-        //resourceDetails.setAccessTokenUri("http://10.52.180.31/auth/oauth/token");
+        resourceDetails.setAccessTokenUri(SECURITY_SERVER_TOKEN_URL);
         resourceDetails.setGrantType("client_credentials");
 
         DefaultOAuth2ClientContext context = new DefaultOAuth2ClientContext();
@@ -69,22 +75,11 @@ public class SecurityServerTest {
         int count = 2;
 
         for(int i = 0; i < count; i++) {
-            String response = restTemplate.getForObject("http://localhost:2222/security-admin-service/securityadmin/permissions", String.class);
-            //String response = restTemplate.getForObject("http://localhost:2222/security-admin-service/securityadmin/permissions", String.class);
-            //String response = restTemplate.getForObject("http://localhost:3333/message-service/message/hystrixTest", String.class);
-            assertEquals("circuit working as expected", response);
+            String response = restTemplate.getForObject(ADMIN_PERMISSIONS_URL, String.class);
+            assertEquals("[{\"id\":1,\"name\":\"*\",\"description\":\"All permissions\"}," +
+                    "{\"id\":2,\"name\":\"view:drawing:*\",\"description\":\"All view drawing permissions\"}," +
+                    "{\"id\":3,\"name\":\"view:drawing:info\",\"description\":\"Only view drawing info permissions\"}]", response);
         }
-    }
-
-    @Test
-    @Ignore
-    public void authorize_with_correctPassword_returns_200() {
-        String url = getAuthorizeUrl("code","devClient","openid", "1234", "http://example.com/");
-        HttpEntity<?> httpEntity = new HttpEntity<>(createHeaders("admin", "password"));
-
-        ResponseEntity<String> response = getRestTemplate().exchange(url, HttpMethod.GET, httpEntity, String.class);
-        assertEquals(200, response.getStatusCode().value());
-
     }
 
     @Test
@@ -93,7 +88,7 @@ public class SecurityServerTest {
         expectedException.expect(HttpClientErrorException.class);
         expectedException.expectMessage("401 null");
 
-        String url = getAuthorizeUrl("code","devClient","openid", "1234", "http://example.com/");
+        String url = getAuthorizeUrl("code","devClient","openid", "1234", ADMIN_PERMISSIONS_URL);
 
         HttpEntity<?> httpEntity = new HttpEntity<>(createHeaders("admin", "password1"));
 
@@ -101,7 +96,7 @@ public class SecurityServerTest {
     }
 
     private String getAuthorizeUrl(String responseType, String clientId, String scope, String state, String redirectUrl) {
-        return "http://localhost:1111/auth/oauth/authorize" +
+        return SECURITY_SERVER_AUTHORIZE_URL +
                 "?response_type=" + responseType +
                 "&client_id=" + clientId +
                 "&redirect_uri=" + redirectUrl +
