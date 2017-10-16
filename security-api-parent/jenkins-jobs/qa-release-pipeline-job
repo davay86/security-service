@@ -6,6 +6,7 @@ node{
 
     stage('Release to QA'){
         sh "kubectl config --kubeconfig=/etc/.kube/config use-context aws_QA"
-        sh "kubectl replace --kubeconfig=/etc/.kube/config  -f security-api-parent/security-api/kubernetes/security-api-qa-deployment.yml --record"
+        sh "kubectl replace --kubeconfig=/etc/.kube/config  -f security-api-parent/security-api/kubernetes/security-api-service.yml --record"
+        //sh "kubectl replace --kubeconfig=/etc/.kube/config  -f security-api-parent/security-api/kubernetes/security-api-qa-deployment.yml --record"
     }
 }
