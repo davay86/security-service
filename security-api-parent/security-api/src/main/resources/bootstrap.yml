@@ -40,7 +40,7 @@ spring:
   profiles: qa
   cloud:
     config:
-      uri: http://10.52.180.42:1111/config-api/
+      uri: http://a7248fd52b28911e798ab0a429a68c51-925490504.eu-west-1.elb.amazonaws.com:1111/config-api/
 logging:
   config: classpath:logback-qa.xml
 
