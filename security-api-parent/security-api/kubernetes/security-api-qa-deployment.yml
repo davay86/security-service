@@ -12,7 +12,7 @@ spec:
         spec:
             containers:
             - name: security-api
-              image: sleepingtalent/security-api:1.0.31-RC
+              image: sleepingtalent/security-api:1.0.32-RC
               env:
               - name: CONFIG_URL
                 value: http://config-api-gateway:1111/config-api/
