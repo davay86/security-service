@@ -15,6 +15,6 @@ spec:
               image: sleepingtalent/security-api:@docker.release.version@-RC
               env:
               - name: CONFIG_URL
-                value: http://a7248fd52b28911e798ab0a429a68c51-925490504.eu-west-1.elb.amazonaws.com:1111/config-api/
+                value: http://a187e39beb30811e798ab0a429a68c51-1763942986.eu-west-1.elb.amazonaws.com:1111/config-api/
               ports:
               - containerPort: 1112
