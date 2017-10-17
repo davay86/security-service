@@ -6,7 +6,6 @@ node{
 
     stage('Release to QA'){
         sh "kubectl config use-context aws_QA"
-        //sh "kubectl apply -f security-api-parent/security-api/kubernetes/security-api-service.yml --record"
         sh "kubectl apply -f security-api-parent/security-api/kubernetes/security-api-qa-deployment.yml --record"
     }
 }

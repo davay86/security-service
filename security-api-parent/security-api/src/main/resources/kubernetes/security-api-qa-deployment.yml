@@ -15,6 +15,23 @@ spec:
               image: sleepingtalent/security-api:@docker.release.version@-RC
               env:
               - name: CONFIG_URL
-                value: http://a187e39beb30811e798ab0a429a68c51-1763942986.eu-west-1.elb.amazonaws.com:1111/config-api/
+                value: http://config-api-gateway:1111/config-api/
               ports:
               - containerPort: 1112
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: security-api-gateway
+    labels:
+        app: security-api
+        tier: security
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 1112
+    selector:
+        app: security-api
+        tier: security
