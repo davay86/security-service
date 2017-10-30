@@ -12,21 +12,7 @@ spec:
         spec:
             containers:
             - name: security-api
-              image: sleepingtalent/security-api:1.0.33-RC
-              readinessProbe:
-                httpGet:
-                  path: /security-api/info
-                  port: 1112
-                initialDelaySeconds: 120
-                timeoutSeconds: 60
-                periodSeconds: 15
-              livenessProbe:
-                httpGet:
-                  path: /security-api/info
-                  port: 1112
-                initialDelaySeconds: 120
-                timeoutSeconds: 60
-                periodSeconds: 15
+              image: sleepingtalent/security-api:1.0.34-RC
               env:
               - name: CONFIG_URL
                 value: http://config-api-gateway:1111/config-api/
