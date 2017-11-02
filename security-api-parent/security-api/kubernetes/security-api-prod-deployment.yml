@@ -3,7 +3,13 @@ kind: Deployment
 metadata:
     name: security-api
 spec:
-    replicas: 1
+    replicas: 2
+    strategy:
+          type: RollingUpdate
+          rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 1
+        minReadySeconds: 5
     template:
         metadata:
             labels:
@@ -12,7 +18,7 @@ spec:
         spec:
             containers:
             - name: security-api
-              image: sleepingtalent/security-api:1.0.38
+              image: sleepingtalent/security-api:1.0.39
               readinessProbe:
                 httpGet:
                   path: /auth/health
