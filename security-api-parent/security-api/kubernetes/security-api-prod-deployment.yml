@@ -18,7 +18,7 @@ spec:
         spec:
             containers:
             - name: security-api
-              image: sleepingtalent/security-api:1.0.42
+              image: sleepingtalent/security-api:1.0.43
               readinessProbe:
                 httpGet:
                   path: /auth/health
