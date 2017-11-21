@@ -21,16 +21,20 @@ spring:
   cloud:
     config:
       uri: http://localhost:1111/config-api/
+      username: configUser
+      password: password
 logging:
   config: classpath:logback.xml
 
 ---
 
 spring:
-    profiles: test
-    cloud:
-      config:
-        uri: http://config-api:1111/config-api/
+  profiles: test
+  cloud:
+    config:
+      uri: http://config-api:1111/config-api/
+      username: configUser
+      password: password
 logging:
   config: classpath:logback.xml
 
@@ -41,6 +45,8 @@ spring:
   cloud:
     config:
       uri: http://config-api-gateway:1111/config-api/
+      username: configUser
+      password: password
 logging:
   config: classpath:logback-qa.xml
 
@@ -51,6 +57,8 @@ spring:
   cloud:
     config:
       uri: http://config-api-gateway:1111/config-api/
+      username: configUser
+      password: password
 logging:
   config: classpath:logback-prod.xml
 
