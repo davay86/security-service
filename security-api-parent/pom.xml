@@ -9,7 +9,7 @@
 
 	<groupId>com.babcock.server</groupId>
 	<artifactId>security-api-parent</artifactId>
-	<version>1.0.42-SNAPSHOT</version>
+	<version>1.0.43-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 
