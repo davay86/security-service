@@ -21,13 +21,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.implicit.ImplicitResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= TestApplication.class)
@@ -104,14 +108,44 @@ public class SecurityApiIT {
     }
 
     @Test
-    @Ignore
+    public void oauth_with_implicit_grantType_works_asExpected() {
+        //ResourceOwnerPasswordResourceDetails resourceDetails = new ResourceOwnerPasswordResourceDetails();
+
+        ImplicitResourceDetails resourceDetails = new ImplicitResourceDetails ();
+
+        //resourceDetails.setId("devOAuth");
+        resourceDetails.setClientId("devApp");
+        resourceDetails.setClientSecret("devAppSecret");
+        //resourceDetails.setUsername("admin");
+        //resourceDetails.setPassword("password");
+
+        resourceDetails.setAccessTokenUri(securityAuthorizeUrl);
+        resourceDetails.setGrantType("implicit");
+        resourceDetails.setPreEstablishedRedirectUri(testServiceUrl+"/message/greeting");
+
+        DefaultOAuth2ClientContext context = new DefaultOAuth2ClientContext();
+        OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails,context);
+
+        HttpEntity<?> httpEntity = new HttpEntity<>(createHeaders("admin", "password"));
+
+        int count = 2;
+
+        for(int i = 0; i < count; i++) {
+            ResponseEntity<String> response = restTemplate.exchange(testServiceUrl+"/message/greeting", HttpMethod.GET, httpEntity, String.class);
+            assertEquals("Hello World!!!", response.getBody());
+            //OAuth2AccessToken accessToken =  restTemplate.getAccessToken();
+            //OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
+        }
+    }
+
+    @Test
     public void authorize_with_correctPassword_returns_asExpected() {
-        String url = getAuthorizeUrl("code","devClient","openid", "1234", testServiceUrl+"/message/greeting");
+        String url = getAuthorizeUrl("code","devApp","openid", "1234", testServiceUrl+"/message/greeting");
 
         HttpEntity<?> httpEntity = new HttpEntity<>(createHeaders("admin", "password"));
 
         ResponseEntity<String> response = getRestTemplate().exchange(url, HttpMethod.GET, httpEntity, String.class);
-        assertEquals("Hello World!!!", response.toString());
+        assertTrue(response.toString().contains("Do you authorize 'devApp' to access your protected resources?"));
     }
 
     @Test
@@ -119,7 +153,7 @@ public class SecurityApiIT {
         expectedException.expect(HttpClientErrorException.class);
         expectedException.expectMessage("401 null");
 
-        String url = getAuthorizeUrl("code","devClient","openid", "1234", testServiceUrl+"/message/greeting");
+        String url = getAuthorizeUrl("token","devApp","openid", "1234", testServiceUrl+"/message/greeting");
 
         HttpEntity<?> httpEntity = new HttpEntity<>(createHeaders("admin", "password1"));
 
@@ -130,9 +164,9 @@ public class SecurityApiIT {
         return securityAuthorizeUrl +
                 "?response_type=" + responseType +
                 "&client_id=" + clientId +
-                "&redirect_uri=" + redirectUrl +
-                "&scope=" + scope +
-                "&state=" + state;
+                "&redirect_uri=" + redirectUrl ;
+                //"&scope=" + scope +
+                //"&state=" + state;
     }
 
     private RestTemplate getRestTemplate() {
