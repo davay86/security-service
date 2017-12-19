@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>security-api</module>
+		<module>security-api-test</module>
 	</modules>
 
 	<properties>

@@ -1,0 +1,75 @@
+###############################################################
+### Default Configuration for development environment       ###
+### This file with be used on local dev and CI environments ###
+###############################################################
+version: '2'
+
+services:
+
+  test-db:
+      image: mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=testdb
+        - MYSQL_USER=test
+        - MYSQL_PASSWORD=password
+      ports:
+        - "3306:3306"
+      expose:
+        - "3306"
+
+  config-api:
+      image: sleepingtalent/configuration-api:latest
+      networks:
+        - microservices
+      environment:
+        - SERVER_PORT=1111
+        - SPRING_PROFILES_ACTIVE=test
+        - GIT_CONFIG_URL=https://github.com/BabcockEMTDevelopment/test-configuration-properties
+      ports:
+        - "1111:1111"
+      volumes:
+        - /home/developer/docker-logs/:/app/log
+      expose:
+        - "1111"
+  #http://localhost:1111/config-api/info
+
+  security-api:
+      image: sleepingtalent/security-api:snapshot
+      networks:
+        - microservices
+      environment:
+        - SERVER_PORT=1112
+        - SPRING_PROFILES_ACTIVE=test
+      ports:
+        - "1112:1112"
+      depends_on:
+        - config-api
+      command: ["dockerize", "-wait", "http://config-api:1111/config-api/security-api/test", "-timeout", "380s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=1112 --spring.profiles.active=test --spring.cloud.config.uri=http://config-api:1111/config-api/"]
+      volumes:
+        - /home/developer/docker-logs/:/app/log
+      expose:
+        - "1112"
+  #http://localhost:1112/auth/info
+
+  security-api-test:
+      image: sleepingtalent/security-api-test:snapshot
+      networks:
+        - microservices
+      environment:
+        - SERVER_PORT=2222
+        - SPRING_PROFILES_ACTIVE=test
+      ports:
+        - "2222:2222"
+      depends_on:
+        - config-api
+      command: ["dockerize", "-wait", "http://config-api:1111/config-api/security-api-test/test", "-timeout", "380s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=2222 --spring.profiles.active=test --spring.cloud.config.uri=http://config-api:1111/config-api/"]
+      volumes:
+        - /home/developer/docker-logs/:/app/log
+      expose:
+        - "2222"
+  #http://localhost:2222/test/info
+
+networks:
+  microservices:
+    driver: bridge

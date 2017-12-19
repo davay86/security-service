@@ -59,68 +59,33 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.35</version>
+		</dependency>
+
+		<!-- DataSource (HikariCP) -->
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<profiles>
-		<profile>
-			<id>docker-publish</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>io.fabric8</groupId>
-						<artifactId>docker-maven-plugin</artifactId>
-						<version>0.21.0</version>
-						<executions>
-							<execution>
-								<id>publish-docker-rc</id>
-								<configuration>
-									<images>
-										<image>
-											<name>sleepingtalent/security-api:${project.version}-RC</name>
-											<build>
-												<dockerFileDir>${project.parent.basedir}/security-api/target/docker-dist</dockerFileDir>
-											</build>
-										</image>
-									</images>
-									<removeAll>true</removeAll>
-								</configuration>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>build</goal>
-									<goal>push</goal>
-									<goal>remove</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>publish-docker-latest</id>
-								<configuration>
-									<images>
-										<image>
-											<name>sleepingtalent/security-api:latest</name>
-											<build>
-												<dockerFileDir>${project.parent.basedir}/security-api/target/docker-dist</dockerFileDir>
-											</build>
-										</image>
-									</images>
-									<removeAll>true</removeAll>
-								</configuration>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>build</goal>
-									<goal>push</goal>
-									<goal>remove</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 	<build>
 		<finalName>${server.jar.name}</finalName>

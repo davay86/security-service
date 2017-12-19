@@ -1,0 +1,35 @@
+info:
+  app:
+    name: security-api-test
+    description: Security API Test
+    version: @project.version@
+
+server:
+  port: 2222
+  context-path: /test
+
+spring:
+  application:
+    name: security-api-test
+  profiles:
+    active: local
+
+---
+
+spring:
+  profiles: local
+  cloud:
+    config:
+      uri: http://localhost:1111/config-api/
+logging:
+  config: classpath:logback.xml
+
+---
+
+spring:
+  profiles: test
+  cloud:
+    config:
+      uri: http://config-api:1111/config-api/
+logging:
+  config: classpath:logback.xml
