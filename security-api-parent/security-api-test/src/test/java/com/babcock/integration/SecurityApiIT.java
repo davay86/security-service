@@ -24,12 +24,15 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.implicit.ImplicitResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
+import org.springframework.security.oauth2.common.AuthenticationScheme;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -111,7 +114,6 @@ public class SecurityApiIT {
     @Test
     @Ignore
     public void oauth_with_implicit_grantType_works_asExpected() {
-        //ResourceOwnerPasswordResourceDetails resourceDetails = new ResourceOwnerPasswordResourceDetails();
 
         ImplicitResourceDetails resourceDetails = new ImplicitResourceDetails ();
 
@@ -120,24 +122,29 @@ public class SecurityApiIT {
         resourceDetails.setClientSecret("devAppSecret");
         //resourceDetails.setUsername("admin");
         //resourceDetails.setPassword("password");
+        resourceDetails.setUserAuthorizationUri(securityAuthorizeUrl);
+        resourceDetails.setAccessTokenUri(securityTokenUrl);
+        resourceDetails.setScope(Arrays.asList("empty"));
+        resourceDetails.setClientAuthenticationScheme(AuthenticationScheme.form);
 
-        resourceDetails.setAccessTokenUri(securityAuthorizeUrl);
-        resourceDetails.setGrantType("implicit");
+        //resourceDetails.setGrantType("implicit");
         resourceDetails.setPreEstablishedRedirectUri(testServiceUrl+"/message/greeting");
 
         DefaultOAuth2ClientContext context = new DefaultOAuth2ClientContext();
         OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails,context);
+        OAuth2AccessToken accessToken =  restTemplate.getAccessToken();
+        OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
 
-        HttpEntity<?> httpEntity = new HttpEntity<>(createHeaders("admin", "password"));
-
-        int count = 2;
-
-        for(int i = 0; i < count; i++) {
-            ResponseEntity<String> response = restTemplate.exchange(testServiceUrl+"/message/greeting", HttpMethod.GET, httpEntity, String.class);
-            assertEquals("Hello World!!!", response.getBody());
-            //OAuth2AccessToken accessToken =  restTemplate.getAccessToken();
-            //OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
-        }
+//        HttpEntity<?> httpEntity = new HttpEntity<>(createHeaders("admin", "password"));
+//
+//        int count = 2;
+//
+//        for(int i = 0; i < count; i++) {
+//            ResponseEntity<String> response = restTemplate.exchange(testServiceUrl+"/message/greeting", HttpMethod.GET, httpEntity, String.class);
+//            assertEquals("Hello World!!!", response.getBody());
+//            //OAuth2AccessToken accessToken =  restTemplate.getAccessToken();
+//            //OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
+//        }
     }
 
     @Test
