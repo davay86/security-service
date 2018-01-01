@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>com.babcock.server</groupId>
 		<artifactId>security-api-parent</artifactId>
-		<version>1.0.49</version>
+		<version>1.0.50-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.babcock.server</groupId>
 	<artifactId>security-api</artifactId>
-	<version>1.0.49</version>
+	<version>1.0.50-SNAPSHOT</version>
 	
 	<packaging>jar</packaging>
 
