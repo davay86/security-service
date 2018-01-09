@@ -1,4 +1,4 @@
-def dockerRepoName = "sleepingtalent/security-api"
+def dockerRepoName = "emtdevelopment/security-api"
 def releaseCandidate = params.RELEASE_CANDIDATE
 def release
 

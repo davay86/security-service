@@ -18,7 +18,7 @@ spec:
         spec:
             containers:
             - name: security-api
-              image: sleepingtalent/security-api:@docker.release.version@-RC
+              image: emtdevelopment/security-api:@docker.release.version@-RC
               readinessProbe:
                 httpGet:
                   path: /auth/health
