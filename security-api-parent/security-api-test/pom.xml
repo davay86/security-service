@@ -79,7 +79,7 @@
                                 <configuration>
                                     <images>
                                         <image>
-                                            <name>sleepingtalent/security-api:${project.version}-RC</name>
+                                            <name>emtdevelopment/security-api:${project.version}-RC</name>
                                             <build>
                                                 <dockerFileDir>
                                                     ${project.parent.basedir}/security-api/target/docker-dist
@@ -101,7 +101,7 @@
                                 <configuration>
                                     <images>
                                         <image>
-                                            <name>sleepingtalent/security-api:latest</name>
+                                            <name>emtdevelopment/security-api:latest</name>
                                             <build>
                                                 <dockerFileDir>
                                                     ${project.parent.basedir}/security-api/target/docker-dist
@@ -192,7 +192,7 @@
                             <skip>${skip.build.microservices.services}</skip>
                             <images>
                                 <image>
-                                    <name>sleepingtalent/security-api:snapshot</name>
+                                    <name>emtdevelopment/security-api:snapshot</name>
                                     <build>
                                         <dockerFileDir>${project.parent.basedir}/security-api/target/docker-dist
                                         </dockerFileDir>
@@ -211,7 +211,7 @@
                             <skip>${skip.build.microservices.services}</skip>
                             <images>
                                 <image>
-                                    <name>sleepingtalent/security-api-test:snapshot</name>
+                                    <name>emtdevelopment/security-api-test:snapshot</name>
                                     <build>
                                         <dockerFileDir>${project.parent.basedir}/security-api-test/target/docker-dist
                                         </dockerFileDir>

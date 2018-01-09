@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-docker rmi -f sleepingtalent/security-api:snapshot
-docker rmi -f sleepingtalent/security-api-test:snapshot
+docker rmi -f emtdevelopment/security-api:snapshot
+docker rmi -f emtdevelopment/security-api-test:snapshot

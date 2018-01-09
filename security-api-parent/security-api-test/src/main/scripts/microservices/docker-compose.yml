@@ -19,7 +19,7 @@ services:
         - "3306"
 
   config-api:
-      image: sleepingtalent/configuration-api:latest
+      image: emtdevelopment/configuration-api:latest
       networks:
         - microservices
       environment:
@@ -35,7 +35,7 @@ services:
   #http://localhost:1111/config-api/info
 
   security-api:
-      image: sleepingtalent/security-api:snapshot
+      image: emtdevelopment/security-api:snapshot
       networks:
         - microservices
       environment:
@@ -53,7 +53,7 @@ services:
   #http://localhost:1112/auth/info
 
   security-api-test:
-      image: sleepingtalent/security-api-test:snapshot
+      image: emtdevelopment/security-api-test:snapshot
       networks:
         - microservices
       environment:
