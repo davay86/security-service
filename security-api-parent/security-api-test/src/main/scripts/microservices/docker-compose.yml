@@ -45,7 +45,7 @@ services:
         - "1112:1112"
       depends_on:
         - config-api
-      command: ["dockerize", "-wait", "http://config-api:1111/config-api/security-api/test", "-timeout", "380s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=1112 --spring.profiles.active=test --spring.cloud.config.uri=http://config-api:1111/config-api/"]
+      command: ["dockerize", "-wait", "http://admin:password@config-api:1111/config-api/security-api/test", "-timeout", "380s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=1112 --spring.profiles.active=test --spring.cloud.config.uri=http://config-api:1111/config-api/"]
       volumes:
         - /home/developer/docker-logs/:/app/log
       expose:
@@ -63,7 +63,7 @@ services:
         - "2222:2222"
       depends_on:
         - config-api
-      command: ["dockerize", "-wait", "http://config-api:1111/config-api/security-api-test/test", "-timeout", "380s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=2222 --spring.profiles.active=test --spring.cloud.config.uri=http://config-api:1111/config-api/"]
+      command: ["dockerize", "-wait", "http://admin:password@config-api:1111/config-api/security-api-test/test", "-timeout", "380s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=2222 --spring.profiles.active=test --spring.cloud.config.uri=http://config-api:1111/config-api/"]
       volumes:
         - /home/developer/docker-logs/:/app/log
       expose:
