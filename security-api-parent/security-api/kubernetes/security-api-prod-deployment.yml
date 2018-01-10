@@ -18,7 +18,7 @@ spec:
         spec:
             containers:
             - name: security-api
-              image: emtdevelopment/security-api:1.0.51
+              image: emtdevelopment/security-api:1.0.52
               readinessProbe:
                 httpGet:
                   path: /auth/health
